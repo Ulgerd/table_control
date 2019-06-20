@@ -1,0 +1,4 @@
+export const SET_NEW_DATA = 'SET_NEW_DATA';
+export const SET_FILTERED_DATA = 'SET_FILTERED_DATA';
+export const SET_CHECKED_ROWS = 'SET_CHECKED_ROWS';
+export const SET_NEW_CELL_VALUE = 'SET_NEW_CELL_VALUE';

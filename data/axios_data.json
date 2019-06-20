@@ -1,0 +1,7 @@
+[
+  {"ID": 0, "Name":"apple",  "Value":1.9, "Amount": 5},
+  {"ID": 1, "Name":"berry",  "Value":1.7, "Amount": 4},
+  {"ID": 2, "Name":"banana", "Value":1.5, "Amount": 3},
+  {"ID": 3, "Name":"cherry", "Value":1.2, "Amount": 2},
+  {"ID": 4, "Name":"melon",  "Value":1.2, "Amount": 1}
+]

@@ -31,3 +31,11 @@
     transform: rotate(360deg);
   }
 }
+
+.row_checked {
+  border: 1px solid blue;
+  background-color: blue;
+}
+
+.row {
+}
