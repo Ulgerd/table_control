@@ -2,26 +2,20 @@ import React, {Component} from 'react';
 import TableHeader from './tableHeader.js';
 import TableRow from './tableRow.js';
 import { connect } from 'react-redux';
-import { setFilteredData } from '../actions/rootActions.js'
+import { setFilteredData, setDataStructure, sortFilteredData} from '../actions/rootActions.js'
 
 import produce from "immer"
 
 class TableControl extends Component {
   state = {
-    data: this.props.data,
-    dataStructure: ['ID', 'Name', 'Value', 'Amount'],
     filterInput: ''
   };
 
-  onDataStructureChange = (newArray) => {
-    this.setState({dataStructure: newArray})
-  }
-
   onSortColumn = (columnName) => {
-    let newData = this.state.data.sort((a, b) => {
+    let newData = this.props.data.sort((a, b) => {
       return (a[columnName] > b[columnName]) ? 1 : -1
     })
-    this.setState({data: newData})
+    this.props.sortFilteredData(newData)
   }
 
   onInputChange = (filter) => {
@@ -30,19 +24,20 @@ class TableControl extends Component {
 
   onEnter = (e) => {
     if (e.key === 'Enter') {
-      let filteredData = this.props.data.filter((row) => {
-        return Object.keys(row).some((value) => {
-          if ((row[value]+'').search(this.state.filterInput) !== -1) {
-            return true;
-          }
-        })
-      })
-      this.props.setFilteredData(filteredData)
+      this.props.setFilteredData(this.state.filterInput)
     }
   }
 
   render() {
     if (this.props.data === undefined) return null;
+
+    let b = [];
+    this.props.data.map((row) => {
+      this.props.filteredData.forEach((id) => {
+        if (row['id'] === id) {b.push(row)}
+      })
+    })
+
     return (
       <div>
         <div>
@@ -55,18 +50,21 @@ class TableControl extends Component {
         <table>
           <thead>
             <TableHeader
-              dataStructure={this.state.dataStructure}
-              onDataStructureChange = {this.onDataStructureChange}
+              dataStructure={this.props.dataStructure}
+              onDataStructureChange = {(newArray) => this.props.setDataStructure(newArray)}
               onSortColumn = {this.onSortColumn}
             />
           </thead>
           <tbody>
-            {this.props.filteredData.map((row) => { /// main Problem
-              return <TableRow
-                      data = {row}
-                      dataStructure={this.state.dataStructure}
-                     />
-            })}
+            {
+              b.map((row) => {
+                return <TableRow
+                  key={row['id']}
+                  data = {row}
+                  dataStructure={this.props.dataStructure}
+                  />
+              })
+            }
           </tbody>
         </table>
       </div>
@@ -77,12 +75,15 @@ class TableControl extends Component {
 const mapStateToProps = store => {
   return {
     data: store.data,
+    dataStructure: store.dataStructure,
     filteredData: store.filteredData
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-    setFilteredData: (filteredData) => {dispatch(setFilteredData(filteredData))},
+    setFilteredData: (filterInput) => {dispatch(setFilteredData(filterInput))},
+    setDataStructure: (newArray) => {dispatch(setDataStructure(newArray))},
+    sortFilteredData: (sortedData) => {dispatch(sortFilteredData(sortedData))}
 })
 
 export default connect(mapStateToProps, mapDispatchToProps) (TableControl);

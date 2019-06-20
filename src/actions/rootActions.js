@@ -1,4 +1,11 @@
-import { SET_NEW_DATA, SET_FILTERED_DATA, SET_CHECKED_ROWS, SET_NEW_CELL_VALUE } from './actionTypes';
+import {
+  SET_NEW_DATA,
+  SET_FILTERED_DATA,
+  SET_CHECKED_ROWS,
+  SET_NEW_CELL_VALUE,
+  SET_DATA_STRUCTURE,
+  SORT_FILTERED_DATA
+} from './actionTypes';
 
 export function setNewData(newData) {
   return {
@@ -7,10 +14,10 @@ export function setNewData(newData) {
   }
 }
 
-export function setFilteredData(filteredData) {
+export function setFilteredData(filterInput) {
   return {
     type: SET_FILTERED_DATA,
-    filteredData
+    filterInput
   }
 }
 
@@ -21,10 +28,24 @@ export function setCheckedRows(checkedRows) {
   }
 }
 
-export function setNewCellValue(columnHeader, newValue) { //rename multiple 
+export function setNewCellValue(columnHeader, newValue) { //rename multiple
   return {
     type: SET_NEW_CELL_VALUE,
     columnHeader,
     newValue
+  }
+}
+
+export function setDataStructure(newArray) {
+  return {
+    type: SET_DATA_STRUCTURE,
+    newArray
+  }
+}
+
+export function sortFilteredData(sortedData) {
+  return {
+    type: SORT_FILTERED_DATA,
+    sortedData
   }
 }

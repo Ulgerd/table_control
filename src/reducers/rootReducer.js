@@ -1,10 +1,11 @@
 import nanoid from 'nanoid';
 import produce from "immer";
+import { filterArr } from '../utils/filterArr.js'
 
 export const initialState = {
   data: undefined,
   dataStructure: ['ID', 'Name', 'Value', 'Amount'],
-  filteredData: undefined, // [{},{},{}]
+  filteredData: [], // [id,id,id]
   checkedRows: [], // массив ID кликнутых элементов
 }
 
@@ -18,12 +19,13 @@ export function rootReducer(state = initialState, action) {
           return row;
         })
         draft.data = newDataWithID;
-        draft.filteredData = newDataWithID;
+        draft.filteredData = filterArr(draft.data, '')
       })
 
     case 'SET_FILTERED_DATA':
       return produce(state, draft => {
-        draft.filteredData = action.filteredData;
+        let filteredData = filterArr(draft.data, action.filterInput)
+        draft.filteredData = filteredData;
       })
 
     case 'SET_CHECKED_ROWS':
@@ -31,21 +33,27 @@ export function rootReducer(state = initialState, action) {
         draft.checkedRows = action.checkedRows;
       })
 
+    case 'SET_DATA_STRUCTURE':
+      return produce(state, draft => {
+        draft.dataStructure = action.newArray;
+      })
+
+    case 'SORT_FILTERED_DATA':
+      return produce(state, draft => {
+        draft.data = [...action.sortedData];
+      })
+
     case 'SET_NEW_CELL_VALUE':
       return produce(state, draft => {
-        // console.log(state.filteredData);
 
-        let newFilteredData = [...draft.data].map((row)=> {
-
-          let a = draft.checkedRows.map((id) => {
+        let newFilteredData = draft.data.map((row)=> {
+          draft.checkedRows.forEach((id) => {
             if (row['id'] === id) {
               row[action.columnHeader] = action.newValue
               return row;
             }
-            return row;
-          })
-
-          return a[0]
+          });
+          return row;
         })
 
         draft.data = newFilteredData;

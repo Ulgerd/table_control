@@ -23,7 +23,7 @@ class TableRow extends Component {
         className= {checked ? "row_checked" : "row"}
       >
           {this.props.dataStructure.map((columnHeader)=>
-            <TableDataCell
+            <TableDataCell //свой ключ каждому
               oneClick = {this.onClick}
               setNewCellValue = {this.props.setNewCellValue}
               columnHeader={columnHeader}
