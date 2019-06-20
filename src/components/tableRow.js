@@ -22,13 +22,16 @@ class TableRow extends Component {
       <tr
         className= {checked ? "row_checked" : "row"}
       >
-          {this.props.dataStructure.map((columnHeader)=>
-            <TableDataCell //свой ключ каждому
+          {this.props.dataStructure.map((columnHeader)=> {
+          if (this.props.visibleColumns[columnHeader]) {
+            return <TableDataCell //свой ключ каждому
               oneClick = {this.onClick}
               setNewCellValue = {this.props.setNewCellValue}
               columnHeader={columnHeader}
               cellData = {this.props.data[columnHeader]}
             />
+          }
+        }
           )}
       </tr>
     )

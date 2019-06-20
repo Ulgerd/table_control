@@ -1,3 +1,4 @@
+
 import React, {Component} from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
@@ -34,19 +35,22 @@ export default class TableHeader extends Component {
             <tr
               ref={provided.innerRef}
             >
-              {this.props.dataStructure.map( (columnHeader, index) =>
-                <Draggable key={columnHeader} draggableId={columnHeader} index={index}>
-                  {(provided, snapshot) => (
-                  <th
-                    ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                    onClick = {() => this.props.onSortColumn(columnHeader)}
-                  >
-                    {columnHeader}
-                  </th>
-                )}
-                </Draggable>
+              {this.props.dataStructure.map( (columnHeader, index) => {
+                if (this.props.visibleColumns[columnHeader]) {
+                  return <Draggable key={columnHeader} draggableId={columnHeader} index={index}>
+                    {(provided, snapshot) => (
+                    <th
+                      ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      onClick = {() => this.props.onSortColumn(columnHeader)}
+                    >
+                      {columnHeader}
+                    </th>
+                  )}
+                  </Draggable>
+                }
+              }
               )}
             </tr>
           )}

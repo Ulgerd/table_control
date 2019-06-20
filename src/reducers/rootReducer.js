@@ -3,10 +3,11 @@ import produce from "immer";
 import { filterArr } from '../utils/filterArr.js'
 
 export const initialState = {
-  data: undefined,
+  data: undefined, // [{},{},{}]
   dataStructure: ['ID', 'Name', 'Value', 'Amount'],
   filteredData: [], // [id,id,id]
-  checkedRows: [], // массив ID кликнутых элементов
+  checkedRows: [], // [id,id,id]
+  visibleColumns: {'ID': true, 'Name': true, 'Value': true, 'Amount': true},
 }
 
 export function rootReducer(state = initialState, action) {
@@ -41,6 +42,12 @@ export function rootReducer(state = initialState, action) {
     case 'SORT_FILTERED_DATA':
       return produce(state, draft => {
         draft.data = [...action.sortedData];
+      })
+
+    case 'SET_VISIBLE_COLUMNS':
+      return produce(state, draft => {
+        console.log(action.newVisibleColumns);
+        draft.visibleColumns = {...action.newVisibleColumns};
       })
 
     case 'SET_NEW_CELL_VALUE':

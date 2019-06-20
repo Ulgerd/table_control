@@ -4,7 +4,8 @@ export default class TableDataCell extends Component {
 
   state = {
     editingData: false,
-    inputValue: this.props.cellData
+    inputValue: this.props.cellData,
+    contextMenu: false
   }
 
   onEnter = (e) => {
@@ -32,7 +33,15 @@ export default class TableDataCell extends Component {
             <td
               onClick = {this.onClick}
               onDoubleClick={this.onDoubleClick}
+              onContextMenu={(e)=> {e.preventDefault(); this.setState({contextMenu: true})}}
             >
+              {this.state.contextMenu ?
+                <ul>
+                  <li onClick ={()=> console.log(1)}>продублировать</li>
+                  <li onClick ={()=>  console.log(2)}>изменить</li>
+                  <li onClick ={()=>  console.log(3)}>удалить</li>
+                </ul> : null}
+
               {this.state.editingData ?
                 <input
                   autoFocus
@@ -41,11 +50,9 @@ export default class TableDataCell extends Component {
                   onKeyPress={this.onEnter}
                 /> :
                 this.props.cellData}
+
             </td>
+
     )
   }
 }
-
-// onDoubleClick={() => this.setState({editingData: true})}
-// columnHeader
-// cellData = {this.props.data[columnHeader]}

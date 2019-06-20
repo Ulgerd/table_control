@@ -4,7 +4,8 @@ import {
   SET_CHECKED_ROWS,
   SET_NEW_CELL_VALUE,
   SET_DATA_STRUCTURE,
-  SORT_FILTERED_DATA
+  SORT_FILTERED_DATA,
+  SET_VISIBLE_COLUMNS
 } from './actionTypes';
 
 export function setNewData(newData) {
@@ -47,5 +48,12 @@ export function sortFilteredData(sortedData) {
   return {
     type: SORT_FILTERED_DATA,
     sortedData
+  }
+}
+
+export function setVisibleColumns(newVisibleColumns) {
+  return {
+    type: SET_VISIBLE_COLUMNS,
+    newVisibleColumns
   }
 }
