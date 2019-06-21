@@ -72,3 +72,9 @@
   background-color: lightgray;
   cursor: pointer;
 }
+
+.top {
+  width: 500px;
+  overflow:scroll;
+  height: 564px;
+}

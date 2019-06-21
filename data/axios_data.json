@@ -3,5 +3,59 @@
   {"ID": 1, "Name":"berry",  "Value":1.7, "Amount": 4},
   {"ID": 2, "Name":"banana", "Value":1.5, "Amount": 3},
   {"ID": 3, "Name":"cherry", "Value":1.2, "Amount": 2},
-  {"ID": 4, "Name":"melon",  "Value":1.2, "Amount": 1}
+  {"ID": 4, "Name":"melon",  "Value":1.2, "Amount": 1},
+
+  {"ID": 5, "Name":"mushroom",  "Value":1.8, "Amount": 15},
+  {"ID": 6, "Name":"avocado",  "Value":2.7, "Amount": 43},
+  {"ID": 7, "Name":"lime", "Value":1.3, "Amount": 13},
+  {"ID": 8, "Name":"corn", "Value":1.1, "Amount": 22},
+  {"ID": 9, "Name":"potato",  "Value":1.2, "Amount": 15},
+
+  {"ID": 10, "Name":"broccoli",  "Value":3.9, "Amount": 2},
+  {"ID": 11, "Name":"kiwi",  "Value":1.1, "Amount": 4},
+  {"ID": 12, "Name":"cabbage", "Value":1.5, "Amount": 13},
+  {"ID": 13, "Name":"peach", "Value":1.0, "Amount": 9},
+  {"ID": 14, "Name":"carrot",  "Value":4.2, "Amount": 7},
+
+  {"ID": 15, "Name":"pineapple",  "Value":10.9, "Amount": 6},
+  {"ID": 16, "Name":"strawberry",  "Value":8.7, "Amount": 3},
+  {"ID": 17, "Name":"blueberry", "Value":6.2, "Amount": 6},
+  {"ID": 18, "Name":"plums", "Value":4.4, "Amount": 21},
+  {"ID": 19, "Name":"eggplant",  "Value":8.2, "Amount": 1},
+
+  {"ID": 20, "Name":"beet",  "Value":3.9, "Amount": 45},
+  {"ID": 21, "Name":"radish",  "Value":3.7, "Amount": 40},
+  {"ID": 22, "Name":"garlic", "Value":6.5, "Amount": 36},
+  {"ID": 23, "Name":"pumpkin", "Value":7.2, "Amount": 21},
+  {"ID": 24, "Name":"watermelon",  "Value":4.2, "Amount": 51},
+
+  {"ID": 0, "Name":"apple",  "Value":1.9, "Amount": 5},
+  {"ID": 1, "Name":"berry",  "Value":1.7, "Amount": 4},
+  {"ID": 2, "Name":"banana", "Value":1.5, "Amount": 3},
+  {"ID": 3, "Name":"cherry", "Value":1.2, "Amount": 2},
+  {"ID": 4, "Name":"melon",  "Value":1.2, "Amount": 1},
+
+  {"ID": 5, "Name":"mushroom",  "Value":1.8, "Amount": 15},
+  {"ID": 6, "Name":"avocado",  "Value":2.7, "Amount": 43},
+  {"ID": 7, "Name":"lime", "Value":1.3, "Amount": 13},
+  {"ID": 8, "Name":"corn", "Value":1.1, "Amount": 22},
+  {"ID": 9, "Name":"potato",  "Value":1.2, "Amount": 15},
+
+  {"ID": 10, "Name":"broccoli",  "Value":3.9, "Amount": 2},
+  {"ID": 11, "Name":"kiwi",  "Value":1.1, "Amount": 4},
+  {"ID": 12, "Name":"cabbage", "Value":1.5, "Amount": 13},
+  {"ID": 13, "Name":"peach", "Value":1.0, "Amount": 9},
+  {"ID": 14, "Name":"carrot",  "Value":4.2, "Amount": 7},
+
+  {"ID": 15, "Name":"pineapple",  "Value":10.9, "Amount": 6},
+  {"ID": 16, "Name":"strawberry",  "Value":8.7, "Amount": 3},
+  {"ID": 17, "Name":"blueberry", "Value":6.2, "Amount": 6},
+  {"ID": 18, "Name":"plums", "Value":4.4, "Amount": 21},
+  {"ID": 19, "Name":"eggplant",  "Value":8.2, "Amount": 1},
+
+  {"ID": 20, "Name":"beet",  "Value":3.9, "Amount": 45},
+  {"ID": 21, "Name":"radish",  "Value":3.7, "Amount": 40},
+  {"ID": 22, "Name":"garlic", "Value":6.5, "Amount": 36},
+  {"ID": 23, "Name":"pumpkin", "Value":7.2, "Amount": 21},
+  {"ID": 24, "Name":"watermelon",  "Value":4.2, "Amount": 51}
 ]

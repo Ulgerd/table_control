@@ -5,7 +5,6 @@ export default function MainPage() {
   // console.log(this.props);
   return (
     <div>
-
         <NavLink
           to={`/table/`}
         >

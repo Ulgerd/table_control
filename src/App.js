@@ -40,7 +40,7 @@ class App extends Component {
 
   render() {
     return (<Router>
-      <div className='App'>
+      <div className='App' >
         <Header/>
         <Switch>
           <Route

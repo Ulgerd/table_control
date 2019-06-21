@@ -10,6 +10,7 @@ class TableControl extends Component {
   state = {
     filterInput: '',
     visibilityListOpen: false,
+    numShow: 20
   };
 
   onSortColumn = (columnName) => {
@@ -35,20 +36,32 @@ class TableControl extends Component {
     this.props.setVisibleColumns(newVisibleColumns)
   }
 
+  onScroll = (e) => {
+    console.log(e.target.offsetHeight);
+    console.log(e.target.scrollTop);
+    console.log(e.target.scrollHeight);
+
+    if (e.target.offsetHeight + e.target.scrollTop > e.target.scrollHeight) {
+      this.setState(({ numShow }) => ({
+        numShow: Math.min(numShow + 10, this.props.data.length),
+      }));
+    }
+  }
+
   render() {
     if (this.props.data === undefined) return null;
 
     let b = [];
     this.props.data.map((row) => {
-      this.props.filteredData.forEach((id) => {
+      this.props.filteredData.slice(0, this.state.numShow).forEach((id) => {
         if (row['id'] === id) {b.push(row)}
       })
     })
-
-    console.log(this.props.filteredData);
     return (
-      <div>
-        <div>
+      <div className = "top"
+        onScroll = {(e) =>{e.preventDefault(); this.onScroll(e)}}
+      >
+        <div >
           { this.state.visibilityListOpen ?
             <div>
               <ul>
