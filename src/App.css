@@ -39,3 +39,36 @@
 
 .row {
 }
+
+.dataCell {
+  position: relative;
+}
+
+.dropdown {
+  position: absolute;
+  background-color: gray;
+  border: 1px solid black;
+  z-index: 30;
+}
+
+/* .dropdown:after {
+  background: transparent;
+  bottom: 0;
+  content: " ";
+  cursor: default;
+  display: block;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 20;
+} */
+
+.dropdownItem {
+  color: white;
+}
+
+.dropdownItem:hover {
+  background-color: lightgray;
+  cursor: pointer;
+}

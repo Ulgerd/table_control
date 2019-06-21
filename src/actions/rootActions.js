@@ -5,7 +5,9 @@ import {
   SET_NEW_CELL_VALUE,
   SET_DATA_STRUCTURE,
   SORT_FILTERED_DATA,
-  SET_VISIBLE_COLUMNS
+  SET_VISIBLE_COLUMNS,
+  CLONE_ROW,
+  DELETE_ROW
 } from './actionTypes';
 
 export function setNewData(newData) {
@@ -55,5 +57,19 @@ export function setVisibleColumns(newVisibleColumns) {
   return {
     type: SET_VISIBLE_COLUMNS,
     newVisibleColumns
+  }
+}
+
+export function cloneRow(rowID) {
+  return {
+    type: CLONE_ROW,
+    rowID
+  }
+}
+
+export function deleteRow(rowID) {
+  return {
+    type: DELETE_ROW,
+    rowID
   }
 }

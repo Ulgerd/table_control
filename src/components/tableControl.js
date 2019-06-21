@@ -45,6 +45,7 @@ class TableControl extends Component {
       })
     })
 
+    console.log(this.props.filteredData);
     return (
       <div>
         <div>

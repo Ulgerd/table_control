@@ -46,8 +46,38 @@ export function rootReducer(state = initialState, action) {
 
     case 'SET_VISIBLE_COLUMNS':
       return produce(state, draft => {
-        console.log(action.newVisibleColumns);
         draft.visibleColumns = {...action.newVisibleColumns};
+      })
+
+    case 'CLONE_ROW':
+      return produce(state, draft => {
+        let newRow;
+        draft.data.map((row)=> {
+          if (row['id'] === action.rowID) {
+            newRow = {...row}
+            let newID = nanoid(6)
+            newRow["id"] = newID;
+            draft.filteredData = [...draft.filteredData, newID]
+          }
+        })
+        draft.data = [...draft.data, newRow]
+      })
+
+    case 'DELETE_ROW':
+      return produce(state, draft => {
+        let index;
+        draft.data.map((row, i)=> {
+          if (row['id'] === action.rowID) {
+            index = i;
+          }
+        })
+        draft.data.splice(index, 1)
+        draft.filteredData.map((id, i)=> {
+          if (id === action.rowID) {
+            index = i;
+          }
+        })
+        draft.filteredData.splice(index, 1)
       })
 
     case 'SET_NEW_CELL_VALUE':
@@ -62,9 +92,7 @@ export function rootReducer(state = initialState, action) {
           });
           return row;
         })
-
         draft.data = newFilteredData;
-
       })
 
     default:
