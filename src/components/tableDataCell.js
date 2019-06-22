@@ -7,6 +7,8 @@ import {
   deleteRow,
 } from '../actions/rootActions.js'
 
+import '../assets/CSS/tableDataCell.css';
+
 function TableDataCell(props)  {
 
   const [editingData, setEditingData] = useState(false);
@@ -17,9 +19,24 @@ function TableDataCell(props)  {
 
   const onEnter = (e) => {
     if (e.key === 'Enter') {
-      props.setNewCellValue(props.columnHeader, inputValue)
-      setEditingData(false)
+      endEditing();
     }
+  }
+
+  const endEditing = () => {
+    let flag = false;
+    props.checkedRows.map ((id) => {
+      if (props.rowID === id) {
+        props.setNewCellValue(props.columnHeader, inputValue)
+        flag = true;
+      }
+      return null;
+    })
+    if (!flag) {
+      props.setCheckedRows([props.rowID])
+      props.setNewCellValue(props.columnHeader, inputValue)
+    }
+    setEditingData(false)
   }
 
   const onClick = (e) => {
@@ -41,7 +58,7 @@ function TableDataCell(props)  {
     }
   }
 
-  const onDoubleClick = () => {
+  const onDoubleClick = (e) => {
     clearTimeout(timer);
     setEditingData(true)
   }
@@ -50,35 +67,44 @@ function TableDataCell(props)  {
     <td
       onClick = {onClick}
       onDoubleClick={onDoubleClick}
-      onContextMenu={(e)=> {e.preventDefault(); setContextMenu(true)}}
+      onContextMenu={(e)=> {e.preventDefault(); setContextMenu(!contextMenu)}}
       className={'dataCell'}
     >
       {contextMenu ?
-        <ul className={'dropdown'}>
+        <ul className={'dropdown_open'} onClick={() => setContextMenu(false)}>
           <li
-            className={'dropdownItem'}
+            className={'dropdownItem first_Item'}
             onClick ={()=> {props.cloneRow(props.rowID); setContextMenu(false)}}
           >
             Продублировать
           </li>
           <li
             className={'dropdownItem'}
-            onClick ={()=> {setEditingData(true); setContextMenu(false)}}
+            onClick ={(e)=> {e.stopPropagation(); setEditingData(true); setContextMenu(false)}}
           >
             Изменить
           </li>
           <li
-            className={'dropdownItem'}
+            className={'dropdownItem last_Item'}
             onClick ={()=> {props.deleteRow(props.rowID); setContextMenu(false)}}
           >
             Удалить
           </li>
         </ul> :
-        null}
+        <div></div>}
+
+        {contextMenu ?
+          <div
+            className ='dropdown_background'
+            onClick ={()=> {setContextMenu(false)}}
+          ></div>:
+          <div></div>}
 
       {editingData ?
         <input
+          className='cell_input'
           autoFocus
+          onBlur = {endEditing}
           onChange ={(e) => setInputValue( e.target.value)}
           value={inputValue}
           onKeyPress={onEnter}

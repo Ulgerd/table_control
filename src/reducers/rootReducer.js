@@ -73,14 +73,18 @@ export function rootReducer(state = initialState, action) {
           }
           return null;
         })
-        draft.data.splice(index, 1)
+        let tempArr = [...draft.data]
+        tempArr.splice(index, 1)
+        draft.data = tempArr
         draft.filteredData.map((id, i)=> {
           if (id === action.rowID) {
             index = i;
           }
           return null;
         })
-        draft.filteredData.splice(index, 1)
+        let tempArr2 = [...draft.filteredData]
+        tempArr2.splice(index, 1)
+        draft.filteredData=tempArr2
       })
 
     case 'SET_NEW_CELL_VALUE':

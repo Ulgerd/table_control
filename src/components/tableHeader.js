@@ -61,6 +61,7 @@ function TableHeader (props) {
               }
               return null;
             })}
+            {provided.placeholder}
           </tr>
         )}
       </Droppable>

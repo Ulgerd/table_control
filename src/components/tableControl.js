@@ -7,15 +7,13 @@ import {
   setVisibleColumns
 } from '../actions/rootActions.js'
 
+import '../assets/CSS/tableControl.css';
+
 function TableControl (props) {
 
   const [filterInput, setFilterInput] = useState('');
   const [visibilityListOpen, setVisibilityListOpen] = useState(false);
   const [numShow, setNumShow] = useState(20);
-
-  const onInputChange = (filter) => {
-    setFilterInput(filter)
-  }
 
   const onEnter = (e) => {
     if (e.key === 'Enter') {
@@ -30,64 +28,67 @@ function TableControl (props) {
   }
 
   const onScroll = (e) => {
-    if (e.target.offsetHeight + e.target.scrollTop > e.target.scrollHeight) {
-      setNumShow(({ numShow }) => ({
-        numShow: Math.min(numShow + 10, props.data.length),
-      }));
+    if (e.target.offsetHeight + e.target.scrollTop === e.target.scrollHeight) {
+      setNumShow((Math.min(numShow + 10, props.data.length)));
     }
   }
 
-    if (props.data === undefined) return null;
+  if (props.data === undefined) return null;
 
-    let rowsToDisplay = [];
-    props.data.map((row) => {
-      props.filteredData.slice(0, numShow).forEach((id) => {
-        if (row['id'] === id) {rowsToDisplay.push(row)}
-      })
-      return null;
+  let rowsToDisplay = [];
+  props.data.map((row) => {
+    props.filteredData.slice(0, numShow).forEach((id) => {
+      if (row['id'] === id) {rowsToDisplay.push(row)}
     })
+    return null;
+  })
 
-    return (
-      <div className = "top"
-        onScroll = {(e) =>{e.preventDefault(); onScroll(e)}}
-      >
-        <div >
-          { visibilityListOpen ?
-            <div>
-              <ul>
-                {props.dataStructure.map((columnHeader) => {
-                  return <li key={columnHeader}>
-                    <input
-                      type="checkbox"
-                      value = {columnHeader}
-                      onChange={onColumnVisibilityCheck}
-                      defaultChecked={true}
-                    />
-                    {columnHeader}
-                  </li>
-                })}
-              </ul>
-              <button
-                onClick = {() => setVisibilityListOpen(false)}
-              >
-                Submit
-              </button>
-            </div>
-
-            :
+  return (
+    <div
+      onScroll = {(e) =>{e.preventDefault(); onScroll(e)}}
+    >
+      <div className='control_panel'>
+        { visibilityListOpen ?
+          <div className='visibility_panel'>
+            <ul className='visibility_list'>
+              {props.dataStructure.map((columnHeader) => {
+                return <li key={columnHeader}>
+                  <input
+                    type="checkbox"
+                    className='checkbox'
+                    value = {columnHeader}
+                    onChange={onColumnVisibilityCheck}
+                    defaultChecked={true}
+                  />
+                  {columnHeader}
+                </li>
+              })}
+            </ul>
             <button
-              onClick={() => setVisibilityListOpen(true)}
+              className='visibility_close_button'
+              onClick = {() => setVisibilityListOpen(false)}
             >
-              Visibility
+              Close
             </button>
-          }
-          <input
-            onChange = {(e) => onInputChange(e.target.value)}
-            value={filterInput}
-            onKeyPress={onEnter}
-          />
-        </div>
-        <table>
+          </div>
+
+          :
+          <button
+            className='visibility_button'
+            onClick={() => setVisibilityListOpen(true)}
+          >
+            Visibility
+          </button>
+        }
+        <input
+          className='filter_input'
+          onChange = {(e) => setFilterInput(e.target.value)}
+          value={filterInput}
+          onKeyPress={onEnter}
+        />
+      </div>
+      <div className='table_wrapper'>
+        <table className='table no_select'>
           <thead>
             <TableHeader/>
           </thead>
@@ -103,7 +104,8 @@ function TableControl (props) {
           </tbody>
         </table>
       </div>
-    )
+    </div>
+  )
 }
 
 const mapStateToProps = store => {

@@ -11,7 +11,7 @@ import TableControl from './components/tableControl.js';
 import MainPage from './components/mainPage.js';
 
 //CSS
-import './App.css';
+import './assets/CSS/App.css';
 
 const API = "https://table-control.ulgerd.now.sh/data/axios_data.json";
 

@@ -1,0 +1,62 @@
+.dropdown_open {
+  position: absolute;
+  background-color: gray;
+  border: 1px solid black;
+  z-index: 30;
+  list-style-type: none;
+  border-radius: 5px;
+  padding: 0;
+  left: 2em;
+}
+
+.dataCell {
+  position: relative;
+  width: 25%
+}
+
+.dropdown_background:after {
+  background: transparent;
+  bottom: 0;
+  content: " ";
+  cursor: default;
+  display: block;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 10;
+}
+
+.dropdownItem {
+  color: white;
+  width: 100%;
+  padding: 0 40px 0 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dropdownItem:hover {
+  background-color: lightgray;
+  cursor: pointer;
+}
+
+.first_Item {
+  border-radius: 5px 5px 0 0;
+}
+
+.last_Item {
+  border-radius: 0 0 5px 5px;
+}
+
+.cell_input {
+  width: 100%;
+  font-size: 1em;
+  border: none;
+  padding-left: 0.2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
