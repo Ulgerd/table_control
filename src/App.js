@@ -39,25 +39,26 @@ class App extends Component {
   }
 
   render() {
-    return (<Router>
-      <div className='App' >
-        <Header/>
-        <Switch>
-          <Route
-            exact path='/'
-            component={MainPage}
-          />
-          <Route
-            exact path='/table/'
-            render={({match}) =>
-              <TableControl
-              />
-            }
-          />
-          <Route component={NoPage}/>
-        </Switch>
-      </div>
-    </Router>);
+    return (
+      <Router>
+        <div className='App' >
+          <Header/>
+          <Switch>
+            <Route
+              exact path='/'
+              component={MainPage}
+            />
+            <Route
+              exact path='/table/'
+              render={({match}) =>
+                <TableControl/>
+              }
+            />
+            <Route component={NoPage}/>
+          </Switch>
+        </div>
+      </Router>
+    );
   }
 }
 

@@ -1,59 +1,104 @@
-import React, {Component} from 'react';
+import React, {useState} from 'react';
+import { connect } from 'react-redux';
+import {
+  setNewCellValue,
+  setCheckedRows,
+  cloneRow,
+  deleteRow,
+} from '../actions/rootActions.js'
 
-export default class TableDataCell extends Component {
+function TableDataCell(props)  {
 
-  state = {
-    editingData: false,
-    inputValue: this.props.cellData,
-    contextMenu: false
-  }
+  const [editingData, setEditingData] = useState(false);
+  const [inputValue, setInputValue] = useState(props.cellData);
+  const [contextMenu, setContextMenu] = useState(false);
 
-  onEnter = (e) => {
+  var timer = null;
+
+  const onEnter = (e) => {
     if (e.key === 'Enter') {
-      this.props.setNewCellValue(this.props.columnHeader, this.state.inputValue)
-      this.setState({editingData: false})
+      props.setNewCellValue(props.columnHeader, inputValue)
+      setEditingData(false)
     }
   }
 
-  onClick = (e) => {
+  const onClick = (e) => {
     e.persist()
-    clearTimeout(this.timer);
-    this.timer = setTimeout(() => {
-      this.props.oneClick(e)
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      singleClick(e)
     }, 250);
   }
 
-  onDoubleClick = () => {
-    clearTimeout(this.timer);
-    this.setState({editingData: true})
+  const singleClick = (e) => {
+    if (e.shiftKey) {
+      props.setCheckedRows([
+        ...props.checkedRows,
+        props.rowID
+      ])
+    } else {
+      props.setCheckedRows([props.rowID])
+    }
   }
 
-  render() {
-    return (
-            <td
-              onClick = {this.onClick}
-              onDoubleClick={this.onDoubleClick}
-              onContextMenu={(e)=> {e.preventDefault(); this.setState({contextMenu: true})}}
-              className={'dataCell'}
-            >
-              {this.state.contextMenu ?
-                <ul className={'dropdown'}>
-                  <li className={'dropdownItem'} onClick ={()=> {this.props.onCloneRow(this.props.rowID); this.setState({contextMenu: false})}}>продублировать</li>
-                  <li className={'dropdownItem'} onClick ={()=> {this.setState({editingData: true}); this.setState({contextMenu: false})}}>изменить</li>
-                  <li className={'dropdownItem'} onClick ={()=> {this.props.onDeleteRow(this.props.rowID); this.setState({contextMenu: false})}}>удалить</li>
-                </ul> : null}
+  const onDoubleClick = () => {
+    clearTimeout(timer);
+    setEditingData(true)
+  }
 
-              {this.state.editingData ?
-                <input
-                  autoFocus
-                  onChange ={(e) => this.setState({inputValue: e.target.value})}
-                  value={this.state.inputValue}
-                  onKeyPress={this.onEnter}
-                /> :
-                this.props.cellData}
+  return (
+    <td
+      onClick = {onClick}
+      onDoubleClick={onDoubleClick}
+      onContextMenu={(e)=> {e.preventDefault(); setContextMenu(true)}}
+      className={'dataCell'}
+    >
+      {contextMenu ?
+        <ul className={'dropdown'}>
+          <li
+            className={'dropdownItem'}
+            onClick ={()=> {props.cloneRow(props.rowID); setContextMenu(false)}}
+          >
+            Продублировать
+          </li>
+          <li
+            className={'dropdownItem'}
+            onClick ={()=> {setEditingData(true); setContextMenu(false)}}
+          >
+            Изменить
+          </li>
+          <li
+            className={'dropdownItem'}
+            onClick ={()=> {props.deleteRow(props.rowID); setContextMenu(false)}}
+          >
+            Удалить
+          </li>
+        </ul> :
+        null}
 
-            </td>
+      {editingData ?
+        <input
+          autoFocus
+          onChange ={(e) => setInputValue( e.target.value)}
+          value={inputValue}
+          onKeyPress={onEnter}
+        /> :
+        props.cellData}
+    </td>
+  )
+}
 
-    )
+const mapStateToProps = store => {
+  return {
+    checkedRows: store.checkedRows
   }
 }
+
+const mapDispatchToProps = dispatch => ({
+  cloneRow: (rowID) => {dispatch(cloneRow(rowID))},
+  deleteRow: (rowID) => {dispatch(deleteRow(rowID))},
+  setNewCellValue: (columnHeader, newValue) => {dispatch(setNewCellValue(columnHeader, newValue))},
+  setCheckedRows: (checkedRows) => {dispatch(setCheckedRows(checkedRows))},
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(TableDataCell);

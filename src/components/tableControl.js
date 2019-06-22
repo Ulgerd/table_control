@@ -1,76 +1,66 @@
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 import TableHeader from './tableHeader.js';
 import TableRow from './tableRow.js';
 import { connect } from 'react-redux';
-import { setFilteredData, setDataStructure, sortFilteredData, setVisibleColumns} from '../actions/rootActions.js'
+import {
+  setFilteredData,
+  setVisibleColumns
+} from '../actions/rootActions.js'
 
-import produce from "immer"
+function TableControl (props) {
 
-class TableControl extends Component {
-  state = {
-    filterInput: '',
-    visibilityListOpen: false,
-    numShow: 20
-  };
+  const [filterInput, setFilterInput] = useState('');
+  const [visibilityListOpen, setVisibilityListOpen] = useState(false);
+  const [numShow, setNumShow] = useState(20);
 
-  onSortColumn = (columnName) => {
-    let newData = this.props.data.sort((a, b) => {
-      return (a[columnName] > b[columnName]) ? 1 : -1
-    })
-    this.props.sortFilteredData(newData)
+  const onInputChange = (filter) => {
+    setFilterInput(filter)
   }
 
-  onInputChange = (filter) => {
-    this.setState({...this.state, filterInput: filter})
-  }
-
-  onEnter = (e) => {
+  const onEnter = (e) => {
     if (e.key === 'Enter') {
-      this.props.setFilteredData(this.state.filterInput)
+      props.setFilteredData(filterInput)
     }
   }
 
-  onColumnVisibilityCheck = (e) => {
-    let newVisibleColumns = {...this.props.visibleColumns}
+  const onColumnVisibilityCheck = (e) => {
+    let newVisibleColumns = {...props.visibleColumns}
     newVisibleColumns[e.target.value] = !newVisibleColumns[e.target.value]
-    this.props.setVisibleColumns(newVisibleColumns)
+    props.setVisibleColumns(newVisibleColumns)
   }
 
-  onScroll = (e) => {
-    console.log(e.target.offsetHeight);
-    console.log(e.target.scrollTop);
-    console.log(e.target.scrollHeight);
-
+  const onScroll = (e) => {
     if (e.target.offsetHeight + e.target.scrollTop > e.target.scrollHeight) {
-      this.setState(({ numShow }) => ({
-        numShow: Math.min(numShow + 10, this.props.data.length),
+      setNumShow(({ numShow }) => ({
+        numShow: Math.min(numShow + 10, props.data.length),
       }));
     }
   }
 
-  render() {
-    if (this.props.data === undefined) return null;
+    if (props.data === undefined) return null;
 
-    let b = [];
-    this.props.data.map((row) => {
-      this.props.filteredData.slice(0, this.state.numShow).forEach((id) => {
-        if (row['id'] === id) {b.push(row)}
+    let rowsToDisplay = [];
+    props.data.map((row) => {
+      props.filteredData.slice(0, numShow).forEach((id) => {
+        if (row['id'] === id) {rowsToDisplay.push(row)}
       })
+      return null;
     })
+
     return (
       <div className = "top"
-        onScroll = {(e) =>{e.preventDefault(); this.onScroll(e)}}
+        onScroll = {(e) =>{e.preventDefault(); onScroll(e)}}
       >
         <div >
-          { this.state.visibilityListOpen ?
+          { visibilityListOpen ?
             <div>
               <ul>
-                {this.props.dataStructure.map((columnHeader) => {
+                {props.dataStructure.map((columnHeader) => {
                   return <li key={columnHeader}>
                     <input
                       type="checkbox"
                       value = {columnHeader}
-                      onChange={this.onColumnVisibilityCheck}
+                      onChange={onColumnVisibilityCheck}
                       defaultChecked={true}
                     />
                     {columnHeader}
@@ -78,7 +68,7 @@ class TableControl extends Component {
                 })}
               </ul>
               <button
-                onClick = {() => this.setState({visibilityListOpen: false})}
+                onClick = {() => setVisibilityListOpen(false)}
               >
                 Submit
               </button>
@@ -86,34 +76,27 @@ class TableControl extends Component {
 
             :
             <button
-              onClick={() => this.setState({visibilityListOpen: true})}
+              onClick={() => setVisibilityListOpen(true)}
             >
               Visibility
             </button>
           }
           <input
-            onChange = {(e) => this.onInputChange(e.target.value)}
-            value={this.state.filterInput}
-            onKeyPress={this.onEnter}
+            onChange = {(e) => onInputChange(e.target.value)}
+            value={filterInput}
+            onKeyPress={onEnter}
           />
         </div>
         <table>
           <thead>
-            <TableHeader
-              visibleColumns={this.props.visibleColumns}
-              dataStructure={this.props.dataStructure}
-              onDataStructureChange = {(newArray) => this.props.setDataStructure(newArray)}
-              onSortColumn = {this.onSortColumn}
-            />
+            <TableHeader/>
           </thead>
           <tbody>
             {
-              b.map((row) => {
+              rowsToDisplay.map((row) => {
                 return <TableRow
                   key={row['id']}
                   data = {row}
-                  dataStructure={this.props.dataStructure}
-                  visibleColumns={this.props.visibleColumns}
                   />
               })
             }
@@ -121,22 +104,19 @@ class TableControl extends Component {
         </table>
       </div>
     )
-  }
 }
 
 const mapStateToProps = store => {
   return {
     data: store.data,
     dataStructure: store.dataStructure,
-    filteredData: store.filteredData,
     visibleColumns: store.visibleColumns,
+    filteredData: store.filteredData,
   }
 }
 
 const mapDispatchToProps = dispatch => ({
     setFilteredData: (filterInput) => {dispatch(setFilteredData(filterInput))},
-    setDataStructure: (newArray) => {dispatch(setDataStructure(newArray))},
-    sortFilteredData: (sortedData) => {dispatch(sortFilteredData(sortedData))},
     setVisibleColumns: (newVisibleColumns) => {dispatch(setVisibleColumns(newVisibleColumns))},
 })
 

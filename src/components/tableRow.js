@@ -1,56 +1,40 @@
-import React, {Component} from 'react';
+import React from 'react';
 import TableDataCell from './tableDataCell.js';
 import { connect } from 'react-redux';
-import { setCheckedRows, setNewCellValue, cloneRow, deleteRow } from '../actions/rootActions.js'
 
-class TableRow extends Component {
+function TableRow(props) {
 
-  onClick = (e) => {
-    if (e.shiftKey) {
-      this.props.setCheckedRows([...this.props.checkedRows, this.props.data['id']])
-    } else {
-      this.props.setCheckedRows([this.props.data['id']])
-    }
-  }
+  let checked = props.checkedRows.some((id) => {
+    return id === props.data['id'];
+  })
 
-  render() {
-    let checked = this.props.checkedRows.some( (id) => {
-      return id === this.props.data['id'];
-    })
-    return (
-      <tr
-        className= {checked ? "row_checked" : "row"}
-      >
-          {this.props.dataStructure.map((columnHeader)=> {
-          if (this.props.visibleColumns[columnHeader]) {
-            return <TableDataCell //свой ключ каждому
-              rowID = {this.props.data['id']}
-              oneClick = {this.onClick}
-              onCloneRow = {this.props.cloneRow}
-              onDeleteRow = {this.props.deleteRow}
-              setNewCellValue = {this.props.setNewCellValue}
+  return (
+    <tr className={checked ? "row_checked": "row"}>
+      {
+        props.dataStructure.map((columnHeader) => {
+          if (props.visibleColumns[columnHeader]) {
+            return <TableDataCell
+              key={props.data['id'] + props.data[columnHeader]}
+              rowID={props.data['id']}
               columnHeader={columnHeader}
-              cellData = {this.props.data[columnHeader]}
+              cellData={props.data[columnHeader]}
             />
           }
-        }
-          )}
-      </tr>
-    )
-  }
+          return null;
+        })
+      }
+    </tr>
+  )
 }
 
 const mapStateToProps = store => {
   return {
-    checkedRows: store.checkedRows
+    checkedRows: store.checkedRows,
+    dataStructure: store.dataStructure,
+    visibleColumns: store.visibleColumns,
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-    setCheckedRows: (checkedRows) => {dispatch(setCheckedRows(checkedRows))},
-    setNewCellValue: (columnHeader, newValue) => {dispatch(setNewCellValue(columnHeader, newValue))},
-    cloneRow: (rowID) => {dispatch(cloneRow(rowID))},
-    deleteRow: (rowID) => {dispatch(deleteRow(rowID))},
-})
+const mapDispatchToProps = dispatch => ({})
 
-export default connect(mapStateToProps, mapDispatchToProps) (TableRow);
+export default connect(mapStateToProps, mapDispatchToProps)(TableRow);

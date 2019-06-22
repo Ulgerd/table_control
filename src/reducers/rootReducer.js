@@ -59,6 +59,7 @@ export function rootReducer(state = initialState, action) {
             newRow["id"] = newID;
             draft.filteredData = [...draft.filteredData, newID]
           }
+          return null;
         })
         draft.data = [...draft.data, newRow]
       })
@@ -70,12 +71,14 @@ export function rootReducer(state = initialState, action) {
           if (row['id'] === action.rowID) {
             index = i;
           }
+          return null;
         })
         draft.data.splice(index, 1)
         draft.filteredData.map((id, i)=> {
           if (id === action.rowID) {
             index = i;
           }
+          return null;
         })
         draft.filteredData.splice(index, 1)
       })

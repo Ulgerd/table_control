@@ -1,61 +1,84 @@
-
-import React, {Component} from 'react';
+import React from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { connect } from 'react-redux';
+//redux
+import {
+  setDataStructure,
+  sortFilteredData,
+} from '../actions/rootActions.js'
+//utils
+import { sortColumns } from '../utils/sortColumns.js';
+import { reorder } from '../utils/reorder.js';
 
-const reorder = (list, startIndex, endIndex) => { //переписать, если будет время
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
+function TableHeader (props) {
 
-  return result;
-};
+  const onSortColumn = (columnName) => {
+    let newData = sortColumns(props.data, columnName)
+    props.sortFilteredData(newData)
+  }
 
-export default class TableHeader extends Component {
-
-  onDragEnd = (result) => {
+  const onDragEnd = (result) => {
     // dropped outside the list
     if (!result.destination) {
       return;
     }
 
     const items = reorder(
-      this.props.dataStructure,
+      props.dataStructure,
       result.source.index,
       result.destination.index
     );
 
-    this.props.onDataStructureChange(items)
+    props.setDataStructure(items)
   }
 
-  render() {
-    return (
-      <DragDropContext onDragEnd={this.onDragEnd}>
-        <Droppable droppableId="droppable" direction="horizontal">
-          {(provided, snapshot) => (
-            <tr
-              ref={provided.innerRef}
-            >
-              {this.props.dataStructure.map( (columnHeader, index) => {
-                if (this.props.visibleColumns[columnHeader]) {
-                  return <Draggable key={columnHeader} draggableId={columnHeader} index={index}>
+  return (
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable droppableId="droppable" direction="horizontal">
+        {(provided, snapshot) => (
+          <tr
+            ref={provided.innerRef}
+          >
+            {props.dataStructure.map( (columnHeader, index) => {
+              if (props.visibleColumns[columnHeader]) {
+                return <Draggable
+                  key={columnHeader}
+                  draggableId={columnHeader}
+                  index={index}
+                  >
                     {(provided, snapshot) => (
                     <th
                       ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
-                      onClick = {() => this.props.onSortColumn(columnHeader)}
+                      onClick = {() => onSortColumn(columnHeader)}
                     >
                       {columnHeader}
                     </th>
+
                   )}
-                  </Draggable>
-                }
+                </Draggable>
               }
-              )}
-            </tr>
-          )}
-        </Droppable>
-      </DragDropContext>
-    )
+              return null;
+            })}
+          </tr>
+        )}
+      </Droppable>
+    </DragDropContext>
+  )
+}
+
+const mapStateToProps = store => {
+  return {
+    data: store.data,
+    dataStructure: store.dataStructure,
+    visibleColumns: store.visibleColumns,
   }
 }
+
+const mapDispatchToProps = dispatch => ({
+    setDataStructure: (newArray) => {dispatch(setDataStructure(newArray))},
+    sortFilteredData: (sortedData) => {dispatch(sortFilteredData(sortedData))},
+})
+
+export default connect(mapStateToProps, mapDispatchToProps) (TableHeader);

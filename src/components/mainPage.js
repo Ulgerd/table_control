@@ -1,17 +1,16 @@
 import React from 'react';
-import {NavLink} from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 export default function MainPage() {
-  // console.log(this.props);
   return (
     <div>
-        <NavLink
-          to={`/table/`}
-        >
+      <NavLink
+        to={`/table/`}
+      >
         <button>
           Перейти на табличный контрол
         </button>
-        </NavLink>
+      </NavLink>
     </div>
   )
 }
