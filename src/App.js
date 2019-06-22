@@ -13,7 +13,7 @@ import MainPage from './components/mainPage.js';
 //CSS
 import './assets/CSS/App.css';
 
-const API = "https://table-control.ulgerd.now.sh/data/axios_data.json";
+const API = "https://tablecontrol-aa8535dpv.now.sh/data/axios_data.json";
 
 class App extends Component {
 

@@ -28,7 +28,11 @@ function TableControl (props) {
   }
 
   const onScroll = (e) => {
-    if (e.target.offsetHeight + e.target.scrollTop === e.target.scrollHeight) {
+    console.log(e.target.offsetHeight);
+    console.log(e.target.scrollTop);
+    console.log(e.target.scrollHeight);
+
+    if (e.target.offsetHeight + e.target.scrollTop >= e.target.scrollHeight) {
       setNumShow((Math.min(numShow + 10, props.data.length)));
     }
   }
@@ -92,7 +96,7 @@ function TableControl (props) {
           <thead>
             <TableHeader/>
           </thead>
-          <tbody>
+          <tbody className='table_body'>
             {
               rowsToDisplay.map((row) => {
                 return <TableRow
