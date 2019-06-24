@@ -25,7 +25,7 @@ function TableControl (props) {
 
   const onColumnVisibilityCheck = (e) => {
     let newVisibleColumns = {...props.visibleColumns}
-    newVisibleColumns[e.target.value] = !newVisibleColumns[e.target.value]
+    newVisibleColumns[e.target.id] = !newVisibleColumns[e.target.id]
     props.setVisibleColumns(newVisibleColumns)
   }
 
@@ -53,14 +53,14 @@ function TableControl (props) {
         { visibilityListOpen ?
           <div className='visibility_panel no_select'>
             <ul className='visibility_list'>
-              {props.dataStructure.map((columnHeader) => {
+              {Object.keys(props.visibleColumns).map((columnHeader) => {
                 return <li key={columnHeader}>
                   <input
+                    id = {columnHeader}
                     type="checkbox"
                     className='checkbox'
-                    value = {columnHeader}
+                    checked = {props.visibleColumns[columnHeader]}
                     onChange={onColumnVisibilityCheck}
-                    defaultChecked={true}
                   />
                   {columnHeader}
                 </li>
@@ -73,7 +73,6 @@ function TableControl (props) {
               Close
             </button>
           </div>
-
           :
           <button
             className='visibility_button no_select'
@@ -82,6 +81,7 @@ function TableControl (props) {
             Visibility
           </button>
         }
+
         <input
           className='filter_input'
           onChange = {(e) => setFilterInput(e.target.value)}
