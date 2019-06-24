@@ -6,14 +6,12 @@ import {
   SET_DATA_STRUCTURE,
   SORT_FILTERED_DATA,
   SET_VISIBLE_COLUMNS,
-  CLONE_ROW,
-  DELETE_ROW
 } from './actionTypes';
 
-export function setNewData(dataWithId, filteredData) {
+export function setNewData(data, filteredData) {
   return {
     type: SET_NEW_DATA,
-    dataWithId,
+    data,
     filteredData
   }
 }
@@ -53,23 +51,7 @@ export function setVisibleColumns(newVisibleColumns) {
   }
 }
 
-export function cloneRow(data, filteredData) {
-  return {
-    type: CLONE_ROW,
-    data,
-    filteredData
-  }
-}
-
-export function deleteRow(data, filteredData) {
-  return {
-    type: DELETE_ROW,
-    data,
-    filteredData
-  }
-}
-
-export function setNewCellValue(columnHeader, newValue) { 
+export function setNewCellValue(columnHeader, newValue) {
   return {
     type: SET_NEW_CELL_VALUE,
     columnHeader,

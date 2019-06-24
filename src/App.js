@@ -57,7 +57,7 @@ const mapStateToProps = store => {
 }
 
 const mapDispatchToProps = dispatch => ({
-    setNewData: (dataWithId, filteredData) => {dispatch(setNewData(dataWithId, filteredData))},
+    setNewData: (data, filteredData) => {dispatch(setNewData(data, filteredData))},
 })
 
 export default connect(mapStateToProps, mapDispatchToProps) (App);

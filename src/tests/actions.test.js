@@ -6,21 +6,21 @@ afterEach(cleanup);
 
 describe('actions tests', () => {
   it('SET_NEW_DATA should create an action', () => {
-    let newData = 'Finish docs'
+    let data = 'Finish docs'
     let expectedAction = {
       type: types.SET_NEW_DATA,
-      newData
+      data
     }
-    expect(actions.setNewData(newData)).toEqual(expectedAction)
+    expect(actions.setNewData(data)).toEqual(expectedAction)
   })
 
   it('SET_FILTERED_DATA should create an action', () => {
-    let filterInput = 'Finish docs'
+    let filteredData = 'Finish docs'
     let expectedAction = {
       type: types.SET_FILTERED_DATA,
-      filterInput
+      filteredData
     }
-    expect(actions.setFilteredData(filterInput)).toEqual(expectedAction)
+    expect(actions.setFilteredData(filteredData)).toEqual(expectedAction)
   })
 
   it('SET_CHECKED_ROWS should create an action', () => {
@@ -68,23 +68,5 @@ describe('actions tests', () => {
       newVisibleColumns,
     }
     expect(actions.setVisibleColumns(newVisibleColumns)).toEqual(expectedAction)
-  })
-
-  it('CLONE_ROW should create an action', () => {
-    let rowID = 'Finish docs'
-    let expectedAction = {
-      type: types.CLONE_ROW,
-      rowID,
-    }
-    expect(actions.cloneRow(rowID)).toEqual(expectedAction)
-  })
-
-  it('DELETE_ROW should create an action', () => {
-    let rowID = 'Finish docs'
-    let expectedAction = {
-      type: types.DELETE_ROW,
-      rowID,
-    }
-    expect(actions.deleteRow(rowID)).toEqual(expectedAction)
   })
 })

@@ -30,10 +30,6 @@ function TableControl (props) {
   }
 
   const onScroll = (e) => {
-    console.log(e.target.offsetHeight);
-    console.log(e.target.scrollTop);
-    console.log(e.target.scrollHeight);
-
     if (e.target.offsetHeight + e.target.scrollTop >= e.target.scrollHeight) {
       setNumShow((Math.min(numShow + 10, props.data.length)));
     }
@@ -55,7 +51,7 @@ function TableControl (props) {
     >
       <div className='control_panel'>
         { visibilityListOpen ?
-          <div className='visibility_panel'>
+          <div className='visibility_panel no_select'>
             <ul className='visibility_list'>
               {props.dataStructure.map((columnHeader) => {
                 return <li key={columnHeader}>
@@ -80,7 +76,7 @@ function TableControl (props) {
 
           :
           <button
-            className='visibility_button'
+            className='visibility_button no_select'
             onClick={() => setVisibilityListOpen(true)}
           >
             Visibility

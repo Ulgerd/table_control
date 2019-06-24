@@ -1,5 +1,5 @@
-import nanoid from 'nanoid';
 import produce from "immer";
+import { changeCellValue } from "../utils/changeCellValue.js";
 
 export const initialState = {
   data: undefined, // [{},{},{}]
@@ -14,7 +14,7 @@ export function rootReducer(state = initialState, action) {
 
     case 'SET_NEW_DATA':
       return produce(state, draft => {
-        draft.data = action.dataWithId;
+        draft.data = action.data;
         draft.filteredData = action.filteredData;
       })
 
@@ -43,31 +43,9 @@ export function rootReducer(state = initialState, action) {
         draft.visibleColumns = {...action.newVisibleColumns};
       })
 
-    case 'CLONE_ROW':
-      return produce(state, draft => {
-        draft.data = action.data;
-        draft.filteredData = action.filteredData;
-
-      })
-
-    case 'DELETE_ROW':
-      return produce(state, draft => {
-        draft.data = action.data;
-        draft.filteredData=action.filteredData;
-      })
-
     case 'SET_NEW_CELL_VALUE':
       return produce(state, draft => {
-        draft.data = draft.data.map((row)=> {
-          draft.checkedRows.forEach((id) => {
-            if (row['id'] === id) {
-              row[action.columnHeader] = action.newValue
-              return row;
-            }
-          });
-          return row;
-        })
-
+        draft.data = changeCellValue(draft.data, draft.checkedRows, action.columnHeader, action.newValue)
       })
 
     default:

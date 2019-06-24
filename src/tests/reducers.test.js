@@ -1,54 +1,188 @@
 import {rootReducer, initialState} from '../reducers/rootReducer.js'
 import * as types from '../actions/actionTypes.js'
+import {cleanup} from '@testing-library/react';
+
+afterEach(() => {
+  cleanup();
+});
 
 describe('reducer test', () => {
   it('should return the initial state', () => {
-    expect(rootReducer(undefined, {})).toEqual({...initialState})
+    expect(rootReducer(undefined, {})).toEqual({
+      ...initialState
+    })
   })
 
-  // it('should handle ADD_TODO', () => {
-  //   expect(
-  //     rootReducer([], {
-  //       type: types.SET_FILTERED_DATA,
-  //       filterInput: [{"ID": 0, "Name":"apple",  "Value":1.9, "Amount": 5, 'id': '123456'},
-  //       {"ID": 1, "Name":"berry",  "Value":1.7, "Amount": 4, 'id': '654321'},]
-  //     })
-  //   ).toEqual([
-  //     {
-  //       data: undefined,
-  //       dataStructure: ['ID', 'Name', 'Value', 'Amount'],
-  //       filteredData: [],
-  //       checkedRows: [],
-  //       visibleColumns: {'ID': true, 'Name': true, 'Value': true, 'Amount': true},
-  //     }
-  //   ])
-  // //
-  //   expect(
-  //     reducer(
-  //       [
-  //         {
-  //           text: 'Use Redux',
-  //           completed: false,
-  //           id: 0
-  //         }
-  //       ],
-  //       {
-  //         type: types.ADD_TODO,
-  //         text: 'Run the tests'
-  //       }
-  //     )
-  //   ).toEqual([
-  //     {
-  //       text: 'Run the tests',
-  //       completed: false,
-  //       id: 1
-  //     },
-  //     {
-  //       text: 'Use Redux',
-  //       completed: false,
-  //       id: 0
-  //     }
-  //   ])
+  it('should handle SET_NEW_DATA', () => {
+    expect(rootReducer({}, {
+      type: types.SET_NEW_DATA,
+      data: [
+        {
+          "ID": 0,
+          "Name": "foo"
+        }, {
+          "ID": 1,
+          "Name": "bar"
+        }, {
+          "ID": 2,
+          "Name": "baz"
+        }
+      ],
+      filteredData: [
+        {
+          "ID": 0,
+          "Name": "foo"
+        }, {
+          "ID": 2,
+          "Name": "baz"
+        }
+      ]
+    })).toEqual({
+      data: [
+        {
+          "ID": 0,
+          "Name": "foo"
+        }, {
+          "ID": 1,
+          "Name": "bar"
+        }, {
+          "ID": 2,
+          "Name": "baz"
+        }
+      ],
+      filteredData: [
+        {
+          "ID": 0,
+          "Name": "foo"
+        }, {
+          "ID": 2,
+          "Name": "baz"
+        }
+      ]
+    })
+  })
 
-  // })
+  it('should handle SET_FILTERED_DATA', () => {
+    expect(rootReducer({}, {
+      type: types.SET_FILTERED_DATA,
+      filteredData: [
+        {
+          "ID": 0,
+          "Name": "foo"
+        }, {
+          "ID": 2,
+          "Name": "baz"
+        }
+      ]
+    })).toEqual({
+      filteredData: [
+        {
+          "ID": 0,
+          "Name": "foo"
+        }, {
+          "ID": 2,
+          "Name": "baz"
+        }
+      ]
+    })
+  })
+
+  it('should handle SET_CHECKED_ROWS', () => {
+    expect(rootReducer({}, {
+      type: types.SET_CHECKED_ROWS,
+      checkedRows: ['123456', '654321', 'baz']
+    })).toEqual({
+      checkedRows: ['123456', '654321', 'baz']
+    })
+  })
+
+  it('should handle SET_DATA_STRUCTURE', () => {
+    expect(rootReducer({}, {
+      type: types.SET_DATA_STRUCTURE,
+      newArray: ['ID', 'Name', 'Value']
+    })).toEqual({
+      dataStructure: ['ID', 'Name', 'Value']
+    })
+  })
+
+  it('should handle SORT_FILTERED_DATA', () => {
+    expect(rootReducer({}, {
+      type: types.SORT_FILTERED_DATA,
+      sortedData: [
+        {
+          "ID": 0,
+          "Name": "foo"
+        }, {
+          "ID": 2,
+          "Name": "baz"
+        }
+      ]
+    })).toEqual({
+      data: [
+        {
+          "ID": 0,
+          "Name": "foo"
+        }, {
+          "ID": 2,
+          "Name": "baz"
+        }
+      ]
+    })
+  })
+
+  it('should handle SET_VISIBLE_COLUMNS', () => {
+    expect(rootReducer({}, {
+      type: types.SET_VISIBLE_COLUMNS,
+      newVisibleColumns: {
+        'ID': true,
+        'Name': false,
+        'Value': true,
+        'Amount': true
+      }
+    })).toEqual({
+      visibleColumns: {
+        'ID': true,
+        'Name': false,
+        'Value': true,
+        'Amount': true
+      }
+    })
+  })
+
+  it('should handle SET_NEW_CELL_VALUE', () => {
+    expect(rootReducer({
+      data: [
+        {
+          "id": 0,
+          "Name": "foo"
+        }, {
+          "id": 1,
+          "Name": "bar"
+        }, {
+          "id": 2,
+          "Name": "baz"
+        }
+      ],
+      checkedRows: [0, 2]
+    }, {
+      type: types.SET_NEW_CELL_VALUE,
+      columnHeader: "Name",
+      newValue: 'cat'
+    })).toEqual({
+      data: [
+        {
+          "id": 0,
+          "Name": "cat"
+        }, {
+          "id": 1,
+          "Name": "bar"
+        }, {
+          "id": 2,
+          "Name": "cat"
+        }
+      ],
+      checkedRows: [0, 2]
+    })
+  })
+
 })

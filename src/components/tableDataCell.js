@@ -1,12 +1,10 @@
 import React, {useState} from 'react';
 import nanoid from 'nanoid';
 import { connect } from 'react-redux';
-import {changeCellValue} from '../utils/changeCellValue.js'
 import {
   setNewCellValue,
   setCheckedRows,
-  cloneRow,
-  deleteRow,
+  setNewData,
 } from '../actions/rootActions.js'
 
 import '../assets/CSS/tableDataCell.css';
@@ -77,7 +75,7 @@ function TableDataCell(props)  {
       return null;
     })
     data = [...props.data, newRow]
-    props.cloneRow(data, filteredData);
+    props.setNewData(data, filteredData);
 
     setContextMenu(false)
   }
@@ -102,7 +100,7 @@ function TableDataCell(props)  {
       return null;
     })
 
-    props.deleteRow(data, filteredData);
+    props.setNewData(data, filteredData);
     setContextMenu(false)
   }
 
@@ -172,8 +170,7 @@ const mapStateToProps = store => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  cloneRow: (data, filteredData) => {dispatch(cloneRow(data, filteredData))},
-  deleteRow: (data, filteredData) => {dispatch(deleteRow(data, filteredData))},
+  setNewData: (data, filteredData) => {dispatch(setNewData(data, filteredData))},
   setNewCellValue: (columnHeader, newValue) => {dispatch(setNewCellValue(columnHeader, newValue))},
   setCheckedRows: (checkedRows) => {dispatch(setCheckedRows(checkedRows))},
 })
