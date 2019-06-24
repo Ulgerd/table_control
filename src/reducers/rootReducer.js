@@ -1,6 +1,5 @@
 import nanoid from 'nanoid';
 import produce from "immer";
-import { filterArr } from '../utils/filterArr.js'
 
 export const initialState = {
   data: undefined, // [{},{},{}]
@@ -15,16 +14,13 @@ export function rootReducer(state = initialState, action) {
 
     case 'SET_NEW_DATA':
       return produce(state, draft => {
-        draft.data = [...action.newData].map( (row) => {
-          row["id"] = nanoid(6);
-          return row;
-        })
-        draft.filteredData = filterArr(draft.data, '')
+        draft.data = action.dataWithId;
+        draft.filteredData = action.filteredData;
       })
 
     case 'SET_FILTERED_DATA':
       return produce(state, draft => {
-        draft.filteredData = filterArr(draft.data, action.filterInput)
+        draft.filteredData = action.filteredData
       })
 
     case 'SET_CHECKED_ROWS':
@@ -49,39 +45,15 @@ export function rootReducer(state = initialState, action) {
 
     case 'CLONE_ROW':
       return produce(state, draft => {
-        let newRow;
-        draft.data.map((row)=> {
-          if (row['id'] === action.rowID) {
-            newRow = {...row}
-            let newID = nanoid(6)
-            newRow["id"] = newID;
-            draft.filteredData = [...draft.filteredData, newID]
-          }
-          return null;
-        })
-        draft.data = [...draft.data, newRow]
+        draft.data = action.data;
+        draft.filteredData = action.filteredData;
+
       })
 
     case 'DELETE_ROW':
       return produce(state, draft => {
-        draft.data.map((row, i)=> {
-          if (row['id'] === action.rowID) {
-            let tempArr = [...draft.data]
-            tempArr.splice(i, 1)
-            draft.data = tempArr
-          }
-          return null;
-        })
-
-        draft.filteredData.map((id, i)=> {
-          if (id === action.rowID) {
-            let tempArr = [...draft.filteredData]
-            tempArr.splice(i, 1)
-            draft.filteredData=tempArr
-          }
-          return null;
-        })
-
+        draft.data = action.data;
+        draft.filteredData=action.filteredData;
       })
 
     case 'SET_NEW_CELL_VALUE':
@@ -95,6 +67,7 @@ export function rootReducer(state = initialState, action) {
           });
           return row;
         })
+
       })
 
     default:

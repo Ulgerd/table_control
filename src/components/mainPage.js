@@ -8,8 +8,12 @@ export default function MainPage() {
     <div>
       <NavLink
         to={`/table/`}
+        data-testid='table-link'
       >
-        <button className='main_button'>
+        <button
+          className='main_button'
+          data-testid='table-button'
+        >
           Перейти на табличный контрол
         </button>
       </NavLink>

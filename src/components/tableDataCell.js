@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
+import nanoid from 'nanoid';
 import { connect } from 'react-redux';
+import {changeCellValue} from '../utils/changeCellValue.js'
 import {
   setNewCellValue,
   setCheckedRows,
@@ -63,6 +65,53 @@ function TableDataCell(props)  {
     setEditingData(true)
   }
 
+  const cloneRow = () => {
+    let newRow, data, filteredData;
+    props.data.map((row)=> {
+      if (row['id'] === props.rowID) {
+        newRow = {...row}
+        let newID = nanoid(6)
+        newRow["id"] = newID;
+        filteredData = [...props.filteredData, newID]
+      }
+      return null;
+    })
+    data = [...props.data, newRow]
+    props.cloneRow(data, filteredData);
+
+    setContextMenu(false)
+  }
+
+  const deleteRow = () => {
+    let data, filteredData;
+    props.data.map((row, i)=> {
+      if (row['id'] === props.rowID) {
+        let tempArr = [...props.data]
+        tempArr.splice(i, 1)
+        data = tempArr;
+      }
+      return null;
+    })
+
+    props.filteredData.map((id, i)=> {
+      if (id === props.rowID) {
+        let tempArr = [...props.filteredData]
+        tempArr.splice(i, 1)
+        filteredData=tempArr
+      }
+      return null;
+    })
+
+    props.deleteRow(data, filteredData);
+    setContextMenu(false)
+  }
+
+  const change = (e) => {
+    e.stopPropagation();
+    setEditingData(true);
+    setContextMenu(false)
+  }
+
   return (
     <td
       onClick = {onClick}
@@ -74,19 +123,19 @@ function TableDataCell(props)  {
         <ul className={'dropdown_open'} onClick={() => setContextMenu(false)}>
           <li
             className={'dropdownItem first_Item'}
-            onClick ={()=> {props.cloneRow(props.rowID); setContextMenu(false)}}
+            onClick ={()=> cloneRow()}
           >
             Продублировать
           </li>
           <li
             className={'dropdownItem'}
-            onClick ={(e)=> {e.stopPropagation(); setEditingData(true); setContextMenu(false)}}
+            onClick ={(e)=> change(e)}
           >
             Изменить
           </li>
           <li
             className={'dropdownItem last_Item'}
-            onClick ={()=> {props.deleteRow(props.rowID); setContextMenu(false)}}
+            onClick ={()=> deleteRow()}
           >
             Удалить
           </li>
@@ -116,13 +165,15 @@ function TableDataCell(props)  {
 
 const mapStateToProps = store => {
   return {
-    checkedRows: store.checkedRows
+    data: store.data,
+    filteredData: store.filteredData,
+    checkedRows: store.checkedRows,
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-  cloneRow: (rowID) => {dispatch(cloneRow(rowID))},
-  deleteRow: (rowID) => {dispatch(deleteRow(rowID))},
+  cloneRow: (data, filteredData) => {dispatch(cloneRow(data, filteredData))},
+  deleteRow: (data, filteredData) => {dispatch(deleteRow(data, filteredData))},
   setNewCellValue: (columnHeader, newValue) => {dispatch(setNewCellValue(columnHeader, newValue))},
   setCheckedRows: (checkedRows) => {dispatch(setCheckedRows(checkedRows))},
 })

@@ -10,17 +10,18 @@ import {
   DELETE_ROW
 } from './actionTypes';
 
-export function setNewData(newData) {
+export function setNewData(dataWithId, filteredData) {
   return {
     type: SET_NEW_DATA,
-    newData
+    dataWithId,
+    filteredData
   }
 }
 
-export function setFilteredData(filterInput) {
+export function setFilteredData(filteredData) {
   return {
     type: SET_FILTERED_DATA,
-    filterInput
+    filteredData
   }
 }
 
@@ -28,14 +29,6 @@ export function setCheckedRows(checkedRows) {
   return {
     type: SET_CHECKED_ROWS,
     checkedRows
-  }
-}
-
-export function setNewCellValue(columnHeader, newValue) { //rename multiple
-  return {
-    type: SET_NEW_CELL_VALUE,
-    columnHeader,
-    newValue
   }
 }
 
@@ -60,16 +53,26 @@ export function setVisibleColumns(newVisibleColumns) {
   }
 }
 
-export function cloneRow(rowID) {
+export function cloneRow(data, filteredData) {
   return {
     type: CLONE_ROW,
-    rowID
+    data,
+    filteredData
   }
 }
 
-export function deleteRow(rowID) {
+export function deleteRow(data, filteredData) {
   return {
     type: DELETE_ROW,
-    rowID
+    data,
+    filteredData
+  }
+}
+
+export function setNewCellValue(columnHeader, newValue) { 
+  return {
+    type: SET_NEW_CELL_VALUE,
+    columnHeader,
+    newValue
   }
 }

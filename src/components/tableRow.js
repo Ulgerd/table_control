@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 function TableRow(props) {
 
   let checked = props.checkedRows.some((id) => {
-    return id === props.data['id'];
+    return id === props.rowData['id'];
   })
 
   return (
@@ -14,10 +14,10 @@ function TableRow(props) {
         props.dataStructure.map((columnHeader) => {
           if (props.visibleColumns[columnHeader]) {
             return <TableDataCell
-              key={props.data['id'] + props.data[columnHeader]}
-              rowID={props.data['id']}
+              key={props.rowData['id'] + props.rowData[columnHeader]}
+              rowID={props.rowData['id']}
               columnHeader={columnHeader}
-              cellData={props.data[columnHeader]}
+              cellData={props.rowData[columnHeader]}
             />
           }
           return null;

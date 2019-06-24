@@ -6,6 +6,7 @@ import {
   setFilteredData,
   setVisibleColumns
 } from '../actions/rootActions.js'
+import { filterArr } from '../utils/filterArr.js'
 
 import '../assets/CSS/tableControl.css';
 
@@ -17,7 +18,8 @@ function TableControl (props) {
 
   const onEnter = (e) => {
     if (e.key === 'Enter') {
-      props.setFilteredData(filterInput)
+      let filteredData = filterArr (props.data, filterInput)
+      props.setFilteredData(filteredData)
     }
   }
 
@@ -101,7 +103,7 @@ function TableControl (props) {
               rowsToDisplay.map((row) => {
                 return <TableRow
                   key={row['id']}
-                  data = {row}
+                  rowData = {row}
                   />
               })
             }
@@ -122,7 +124,7 @@ const mapStateToProps = store => {
 }
 
 const mapDispatchToProps = dispatch => ({
-    setFilteredData: (filterInput) => {dispatch(setFilteredData(filterInput))},
+    setFilteredData: (filteredData) => {dispatch(setFilteredData(filteredData))},
     setVisibleColumns: (newVisibleColumns) => {dispatch(setVisibleColumns(newVisibleColumns))},
 })
 

@@ -13,7 +13,7 @@ import { reorder } from '../utils/reorder.js';
 function TableHeader (props) {
 
   const onSortColumn = (columnName) => {
-    let newData = sortColumns(props.data, columnName)
+    let newData = sortColumns(props.data, columnName);
     props.sortFilteredData(newData)
   }
 
